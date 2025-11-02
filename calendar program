@@ -1,0 +1,170 @@
+@@ -0,0 +1,169 @@
+
+# 🗓️ Flutter Calendar Program (Week 11)
+
+A Flutter application to implement a **calendar widget** using the `table_calendar` package.
+
+---
+
+## 🌐 Run Online
+
+👉 [Run this Calendar App on Zapp Flutter Playground](https://zapp.run/edit/flutter-zp2o06pjp2p0?entry=lib/main.dart&file=lib/main.dart)
+
+---
+
+## ⚙️ Run Offline (in Android Studio or VS Code)
+
+Follow these simple steps to set up and run the code locally 👇
+
+---
+
+### 🧩 Step 1: Update Dependencies
+
+Open your `pubspec.yaml` file and add the following under **dependencies:**
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  table_calendar: ^3.0.0
+````
+
+Then open your terminal and run:
+
+```bash
+flutter pub get
+```
+
+---
+
+### 🧠 Step 2: Add Code to `lib/main.dart`
+
+Paste the following Dart code into your `main.dart` file:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: HomeCalendarPage(),
+    );
+  }
+}
+
+class HomeCalendarPage extends StatefulWidget {
+  @override
+  _HomeCalendarPageState createState() => _HomeCalendarPageState();
+}
+
+class _HomeCalendarPageState extends State<HomeCalendarPage> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  bool _isSameDay(DateTime? a, DateTime? b) {
+    if (a == null || b == null) return false;
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Calendar Example'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            TableCalendar(
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              selectedDayPredicate: (day) => _isSameDay(_selectedDay, day),
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              },
+              onPageChanged: (focusedDay) => _focusedDay = focusedDay,
+              onFormatChanged: (format) {
+                setState(() => _calendarFormat = format);
+              },
+              headerStyle: HeaderStyle(
+                titleCentered: true,
+                formatButtonVisible: true,
+                formatButtonDecoration: BoxDecoration(
+                  color: Colors.brown,
+                  borderRadius: BorderRadius.circular(22.0),
+                ),
+                formatButtonTextStyle: const TextStyle(color: Colors.white),
+              ),
+              calendarStyle: const CalendarStyle(
+                weekendTextStyle: TextStyle(color: Colors.red),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              startingDayOfWeek: StartingDayOfWeek.monday,
+            ),
+            const SizedBox(height: 20),
+            if (_selectedDay != null)
+              Text(
+                "Selected Date: ${_selectedDay!.day}/${_selectedDay!.month}/${_selectedDay!.year}",
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+---
+
+### ▶️ Step 3: Run the App
+
+1. Open the terminal in your project directory
+2. Run this command:
+
+```bash
+flutter run
+```
+
+---
+
+## ⚠️ Common Errors & Fixes
+
+| Error                      | Cause                | Solution                                        |
+| -------------------------- | -------------------- | ----------------------------------------------- |
+| `table_calendar not found` | Package missing      | Run `flutter pub get`                           |
+| `RenderFlex overflowed`    | Layout too small     | Wrap content in `SingleChildScrollView`         |
+| `No devices found`         | Emulator not running | Start Android Emulator or connect a real device |
+
+---
+
+## 📚 Learn Dart Programming
+
+For detailed Dart tutorials and Flutter basics, visit  blog:
+👉 [ Dart Programming Blog](https://lunardiadem.blogspot.com/p/dart-programming-language.html)
+
+
+📘 [Visit Blog](https://lunardiadem.blogspot.com/p/dart-programming-language.html)
+
+---
